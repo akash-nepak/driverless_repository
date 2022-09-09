@@ -1,0 +1,21 @@
+import rospy
+from std_msgs.msg import Float64
+from beginner_tutorials.msg import msg1
+from beginner_tutorials.msg import msg2
+
+
+def subscriberCallBack(data): #subscribing to node 2
+
+    rospy.loginfo(rospy.get_caller_id() + " I recieved data: The name is: %s and age is %f", data.name, data.age)
+    rospy.loginfo("The status is : %s", data.status)
+    
+def listener_two(): #subscribing to node 2 
+    rospy.init_node('t3node3', anonymous=True)
+    rospy.Subscriber("task_topic2", msg2, subscriberCallBack)
+    rospy.spin() # the python file does not exit
+
+if _name_ == '_main_':
+    try:
+        listener_two()
+    except rospy.ROSInterruptException:
+        pass
