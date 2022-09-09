@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+import rospy
+from std_msgs.msg import String
+#from beginner_tutorials import msg1
+from beginner_tutorials.msg import msg1
+from beginner_tutorials.msg import msg2 #for publishing
+
+pub = rospy.Publisher("task_topic2",msg2,queue_size=10)
+
+def callback(data):
+    # rospy.loginfo("The person is %s and the age is %f", data.name, data.age)
+    msg = msg2()
+    if (data.age >= 18) : 
+    #    rospy.loginfo(" The person : %s is eligible to vote", data.name)
+        msg.name = data.name
+        msg.age = data.age
+        msg.status = "ELIGIBLE"
+        pub.publish(msg)
+    else : 
+    #    rospy.loginfo("%s is ineligible to vote", data.name)
+        msg.name = data.name
+        msg.age = data.age
+        msg.status = "INELIGIBLE"
+        pub.publish(msg)
+    
+#    return data.status
+
+def listener(): #subscribing to node 1
+    rospy.init_node('t3node2subscriber', anonymous=True)
+    rospy.Subscriber("task_topic", msg1, callback)
+    rospy.spin()
+
+
+
+
+
+if _name_ == '_main_':
+    try:
+        listener()
+    except rospy.ROSInterruptException:
+        pass
+    
+    # talker()
